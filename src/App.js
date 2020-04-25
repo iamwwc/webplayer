@@ -11,6 +11,7 @@ function App() {
   let src = ''
   let xigua = useRef({})
   const divcopy = React.createRef()
+  const inputref = React.createRef()
   let params = getParams(window.location.search.substr(1))
   let playerurl = params.find(e => e[0] === 'playurl')
   // 有url就不显示nav，默认没有url，显示
@@ -24,17 +25,19 @@ function App() {
     xigua.current.destroy(true)
     xigua.current = new Player({
       id: "xgplayer",
-      url: src,
+      url: getSrc(),
       autoplay: true,
       width: '100%',
-      height: '100%'
+      height: '100%',
+      download: true
     })
   }
   useEffect(() => {
     xigua.current = new Player({
       id: "xgplayer",
       width: '100%',
-      height: '100%'
+      height: '100%',
+      download: true
     })
     if (!show_nav) {
       xigua.current.start(src)
@@ -43,15 +46,29 @@ function App() {
   }, [])
 
   const sharefullurl = () => {
-    setShare(`${window.location.href}?playurl=${src}`)
+    setShare(getShare())
   }
+  const getShare = () => `${window.location.href}?playurl=${inputref.current.value}`
+  const getSrc = () => inputref.current.value
   const copy = () => {
     var range = document.createRange();
     range.selectNode(divcopy.current); //changed here
-    window.getSelection().removeAllRanges(); 
-    window.getSelection().addRange(range); 
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
     document.execCommand("copy");
     window.getSelection().removeAllRanges();
+  }
+  const emedable = () => {
+    let s = getShare()
+    setShare(`
+    <iframe id="player-share"
+    title="webplayer-share"
+    width="100%"
+    height="400px"
+    src="${inputref.current.value}"
+    allow="fullscreen">
+</iframe>
+    `)
   }
   return (
     <div className="App">
@@ -59,11 +76,12 @@ function App() {
         show_nav && (
           <div className="nav-root">
             <div id="url-nav">
-              <input type="text" placeholder="play url" onChange={i => src = i.target.value}></input>
+              <input  ref={inputref} type="text" placeholder="play url" onChange={i => src = i.target.value}></input>
               <button className="play-btn" onClick={handleClick}>播放</button>
             </div>
             <div className=".share">
-              <button onClick={sharefullurl}>单页全屏</button>
+              <button onClick={sharefullurl}>单页全屏分享</button>
+              <button onClick={emedable}>生成可嵌入iframe </button>
               <div ref={divcopy}>{share}</div>
               {share !== '' && (<button onClick={copy}>复制</button>)}
             </div>
