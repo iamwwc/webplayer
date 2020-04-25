@@ -38,7 +38,7 @@ function App() {
     })
     if (!show_nav) {
       xigua.current.start(src)
-      xigua.current.play()
+      // xigua.current.play()
     }
   }, [])
 
