@@ -76,7 +76,7 @@ function App() {
         show_nav && (
           <div className="nav-root">
             <div id="url-nav">
-              <input  ref={inputref} type="text" placeholder="play url" onChange={i => src = i.target.value}></input>
+              <input  required ref={inputref} type="text" placeholder="play url" onChange={i => src = i.target.value}></input>
               <button className="play-btn" onClick={handleClick}>播放</button>
             </div>
             <div className=".share">
