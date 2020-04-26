@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Player from 'xgplayer'
 import logo from './logo.svg'
+import github from './github.svg'
 const log = (...args) => {
   if (process.env.NODE_ENV === 'development')
     console.log(...args)
@@ -42,14 +43,16 @@ function App() {
       url: getInputValue(),
       autoplay: true,
       width: '100%',
-      height: '100%'
+      height: '100%',
+      download: true
     })
   }
   useEffect(() => {
     xigua.current = new Player({
       id: "xgplayer",
       width: '100%',
-      height: '100%'
+      height: '100%',
+      download: true
     })
     if (!show_nav) {
       xigua.current.start(src)
@@ -85,6 +88,11 @@ function App() {
 
   return (
     <div className="App">
+      <a href="https://github.com/iamwwc/webplayer" target="_blank" style={{
+        backgroundColor:"#000"
+      }}>
+        <img src="/github.png"></img>
+      </a>
       {
         show_nav && (
           <div className="nav-root">
