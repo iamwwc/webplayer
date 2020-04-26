@@ -28,3 +28,43 @@ body, html {
   height: 30px;
   width: 60px;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  .spin-logo {
+    animation: app-spin-logo infinite 5s linear;
+    position: absolute;
+    top: 40%;
+    z-index: 500;
+    width: 150px;
+  }
+}
+@keyframes app-spin-logo {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  background-color: #fff;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  z-index: 1000;
+  animation: fadeout 0.5s;
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

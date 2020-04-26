@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 import Player from 'xgplayer'
+import logo from './logo.svg'
 const log = (...args) => {
   if (process.env.NODE_ENV === 'development')
     console.log(...args)
@@ -14,6 +15,7 @@ const info = [
 window.Player = Player
 function App() {
   let [src, setSrc] = useState('')
+  let [loading, setLoading] = useState(true)
   let xigua = useRef({})
   const divcopy = React.createRef()
   const inputref = React.createRef()
@@ -28,6 +30,11 @@ function App() {
       setSrc(playerurl[1])
     }
   }, [])
+
+  useEffect(() => {
+    setLoading(false)
+  }, [show_nav])
+
   const handleClick = function () {
     xigua.current.destroy(true)
     xigua.current = new Player({
@@ -53,7 +60,7 @@ function App() {
   const sharefullurl = () => {
     setShare(getShare())
   }
-  const getShare = () => `${window.location.href}?playurl=${inputref.current.value}`
+  const getShare = () => `${window.location.href}?playurl=${src}`
   const getInputValue = () => inputref.current.value
   const copy = () => {
     var range = document.createRange();
@@ -69,7 +76,7 @@ function App() {
     title="webplayer-share"
     width="100%"
     height="400px"
-    src="${inputref.current.value}"
+    src="${getShare()}"
     allow="fullscreen">
 </iframe>
     `)
@@ -103,6 +110,13 @@ function App() {
           </div>
         )
 
+      }
+      {
+        loading && (
+          <div className="loading">
+            <img src={logo} className="spin-logo"></img>
+          </div>
+        )
       }
       <div id="player" style={!show_nav ? { height: '100%', width: '100%' } : {}}>
         <div id="xgplayer" style={{ paddingTop: 0, height: '100%' }}></div>
