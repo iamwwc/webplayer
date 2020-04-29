@@ -44,7 +44,8 @@ function App() {
       autoplay: true,
       width: '100%',
       height: '100%',
-      download: true
+      download: true,
+      execBeforePluginsCall: [beforePlugin]
     })
   }
   useEffect(() => {
@@ -52,7 +53,8 @@ function App() {
       id: "xgplayer",
       width: '100%',
       height: '100%',
-      download: true
+      download: true,
+      execBeforePluginsCall: [beforePlugin]
     })
     if (!show_nav) {
       xigua.current.start(src)
@@ -88,11 +90,15 @@ function App() {
 
   return (
     <div className="App">
-      <a href="https://github.com/iamwwc/webplayer" target="_blank" style={{
-        backgroundColor:"#000"
-      }}>
-        <img src="/github.png"></img>
-      </a>
+      {
+        show_nav && (
+          <a href="https://github.com/iamwwc/webplayer" target="_blank" style={{
+            backgroundColor: "#000"
+          }}>
+            <img src="/github.png"></img>
+          </a>
+        )
+      }
       {
         show_nav && (
           <div className="nav-root">
@@ -146,6 +152,12 @@ function App() {
       )}
     </div>
   );
+}
+
+function beforePlugin(xg, xg2) {
+  const pluginCall = xg.pluginsCall
+  window.plugins = xg.constructor.plugins
+  delete xg.constructor.plugins['download']
 }
 
 
